@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Мои заказы — ALIVA</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    header {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 70px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #111;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      color: #111;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 50px 30px 80px;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    .order {
+      border: 1px solid #e5e5e5;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .order-number {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .status {
+      color: #777;
+    }
+
+    .order-date {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .total {
+      text-align: right;
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .empty {
+      color: #777;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .order-contact {
+        margin-bottom: 20px;
+        color: #555;
+    }
+
+    .order-contact p {
+        margin: 8px 0;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <a href="/products"
+     class="logo">
+    ALIVA
+  </a>
+
+  <nav>
+
+    <a href="/products">
+      Каталог
+    </a>
+
+    <a href="/cart">
+      Корзина
+    </a>
+
+    <a href="/logout">
+      Выйти
+    </a>
+
+  </nav>
+
+</header>
+
+<main class="container">
+
+  <h1>
+    Мои заказы
+  </h1>
+
+  <div th:if="${orders.isEmpty()}"
+       class="empty">
+
+    У вас пока нет заказов.
+
+  </div>
+
+  <div th:each="order : ${orders}"
+       class="order">
+
+    <div class="order-header">
+
+      <div class="order-number">
+
+        Заказ №
+        <span th:text="${order.id}">
+                    1
+                </span>
+
+      </div>
+
+      <div class="status"
+           th:text="${order.status}">
+
+        NEW
+
+      </div>
+
+    </div>
+
+    <div class="order-date">
+
+      Дата:
+
+      <span th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}">
+                22.08.2026 15:00
+            </span>
+
+    </div>
+
+      <div class="order-contact">
+
+          <p>
+              Телефон:
+              <span th:text="${order.phone}">
+      +7 777 777 77 77
+    </span>
+          </p>
+
+          <p>
+              Адрес:
+              <span th:text="${order.address}">
+      Адрес доставки
+    </span>
+          </p>
+
+      </div>
+
+    <div th:each="item : ${order.items}"
+         class="order-item">
+
+            <span>
+
+                <span th:text="${item.product.name}">
+                    Product
+                </span>
+
+                ×
+
+                <span th:text="${item.quantity}">
+                    1
+                </span>
+
+            </span>
+
+      <span>
+
+                <span th:text="${item.price * item.quantity}">
+                    25000
+                </span>
+
+                ₸
+
+            </span>
+
+    </div>
+
+    <div class="total">
+
+      Итого:
+
+      <span th:text="${order.totalPrice}">
+                25000
+            </span>
+
+      ₸
+
+    </div>
+
+  </div>
+
+  <a href="/products"
+     class="back">
+
+    ← Вернуться в каталог
+
+  </a>
+
+</main>
+
+</body>
+
+</html>

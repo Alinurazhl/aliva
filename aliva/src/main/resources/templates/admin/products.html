@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>ALIVA — Товары</title>
+
+  <style>
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #111;
+    }
+
+    header {
+      height: 80px;
+      padding: 0 60px;
+      border-bottom: 1px solid #ddd;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 5px;
+    }
+
+    a {
+      color: #111;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 50px 30px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-weight: 400;
+    }
+
+    .button {
+      padding: 12px 20px;
+      background: #111;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .delete {
+      background: #fff;
+      color: #111;
+      border: 1px solid #ddd;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+<div th:replace="~{admin/admin-header :: header}"></div>
+
+
+
+<main class="container">
+
+  <div class="top">
+
+    <h1>
+      Товары
+    </h1>
+
+    <a href="/admin/products/new"
+       class="button">
+
+      + Добавить товар
+
+    </a>
+
+  </div>
+
+  <table>
+
+    <thead>
+
+    <tr>
+
+      <th>ID</th>
+      <th>Название</th>
+      <th>Бренд</th>
+      <th>Цена</th>
+      <th>Остаток</th>
+      <th>Действия</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="product : ${products}">
+
+      <td th:text="${product.id}">
+        1
+      </td>
+
+      <td th:text="${product.name}">
+        Bag
+      </td>
+
+      <td th:text="${product.brand}">
+        ALIVA
+      </td>
+
+      <td>
+
+                <span th:text="${product.price}">
+                    25000
+                </span>
+
+        ₸
+
+      </td>
+
+      <td th:text="${product.stock}">
+        10
+      </td>
+
+      <td>
+
+        <div class="actions">
+
+          <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
+             class="button">
+
+            Изменить
+
+          </a>
+
+          <form th:action="@{/admin/products/delete/{id}(id=${product.id})}"
+                method="post">
+
+            <button type="submit"
+                    class="button delete">
+
+              Удалить
+
+            </button>
+
+          </form>
+
+        </div>
+
+      </td>
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</main>
+
+</body>
+</html>

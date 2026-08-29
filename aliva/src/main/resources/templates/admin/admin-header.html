@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<header th:fragment="header"
+        style="
+            border-bottom: 1px solid #ddd;
+            padding: 20px 40px;
+            margin-bottom: 30px;
+        ">
+
+  <div style="
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    ">
+
+    <!-- LOGO -->
+    <a th:href="@{/admin}"
+       style="padding: 0 20px;
+                text-decoration: none;
+                color: #111;
+                font-size: 24px;
+                font-weight: bold;
+                letter-spacing: 3px;
+           ">
+      ALIVA ADMIN
+    </a>
+
+
+    <!-- MENU -->
+    <nav style="
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        ">
+
+      <a th:href="@{/admin}"
+         style="text-decoration: none; color: #111;">
+        Главная
+      </a>
+
+      <a th:href="@{/admin/products}"
+         style="text-decoration: none; color: #111;">
+        Товары
+      </a>
+
+      <a th:href="@{/admin/categories}"
+         style="text-decoration: none; color: #111;">
+        Категории
+      </a>
+
+      <a th:href="@{/admin/orders}"
+         style="text-decoration: none; color: #111;">
+        Заказы
+      </a>
+
+      <a th:href="@{/products}"
+         style="text-decoration: none; color: #111;">
+        Магазин
+      </a>
+
+      <!-- ВЫЙТИ -->
+      <form th:action="@{/logout}"
+            method="post"
+            style="margin: 0;">
+
+        <button type="submit"
+                style="
+                            border: none;
+                            background: none;
+                            cursor: pointer;
+                            font-size: 15px;
+                            color: #111;
+                        ">
+          Выйти
+        </button>
+
+      </form>
+
+    </nav>
+
+  </div>
+
+</header>
+
+</body>
+</html>

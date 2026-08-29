@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title th:text="${product.name} + ' — ALIVA'">
+    ALIVA — Товар
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 70px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-decoration: none;
+      color: #111;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 35px;
+    }
+
+    .navigation a {
+      text-decoration: none;
+      color: #111;
+      font-size: 15px;
+    }
+
+    .navigation a:hover {
+      color: #777;
+    }
+
+    /* PRODUCT */
+
+    .product-container {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 35px 30px 80px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 35px;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #111;
+    }
+
+    .product-layout {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* IMAGE */
+
+    .product-image-container {
+      width: 100%;
+      height: 650px;
+      background: #f5f5f5;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .no-image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+
+    /* INFO */
+
+    .product-info {
+      padding: 20px 10px;
+    }
+
+    .brand {
+      color: #888;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .product-title {
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1.15;
+      margin: 0 0 20px;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e5e5e5;
+      margin: 30px 0;
+    }
+
+    .description {
+      color: #555;
+      line-height: 1.7;
+      font-size: 15px;
+      margin-bottom: 35px;
+    }
+
+    /* DETAILS */
+
+    .details {
+      border-top: 1px solid #e5e5e5;
+      margin-bottom: 35px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid #e5e5e5;
+      font-size: 14px;
+    }
+
+    .detail-label {
+      color: #777;
+    }
+
+    .detail-value {
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* BUTTON */
+
+    .cart-button {
+      width: 100%;
+      padding: 17px;
+      border: none;
+      background: #111;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .cart-button:hover {
+      background: #333;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding: 40px;
+      border-top: 1px solid #e5e5e5;
+      text-align: center;
+      color: #777;
+      font-size: 13px;
+    }
+
+    /* ADAPTIVE */
+
+    @media (max-width: 900px) {
+
+      header {
+        padding: 0 30px;
+      }
+
+      .product-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .product-image-container {
+        height: 550px;
+      }
+
+      .product-title {
+        font-size: 34px;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      header {
+        padding: 0 20px;
+      }
+
+      .navigation {
+        gap: 15px;
+      }
+
+      .product-container {
+        padding: 25px 20px 60px;
+      }
+
+      .product-image-container {
+        height: 450px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+  <a href="/products"
+     class="logo">
+    ALIVA
+  </a>
+
+
+  <nav class="navigation">
+
+    <a href="/products">
+      Каталог
+    </a>
+
+    <a href="/logout">
+      Выйти
+    </a>
+
+  </nav>
+
+</header>
+
+
+<!-- PRODUCT -->
+
+<main class="product-container">
+
+
+  <a href="/products"
+     class="back-link">
+
+    ← Вернуться в каталог
+
+  </a>
+
+
+  <div class="product-layout">
+
+
+    <!-- IMAGE -->
+
+    <div class="product-image-container">
+
+      <img th:if="${product.image != null}"
+           th:src="${product.image}"
+           th:alt="${product.name}"
+           class="product-image">
+
+
+      <div th:if="${product.image == null}"
+           class="no-image">
+
+        Нет изображения
+
+      </div>
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <div class="product-info">
+
+
+      <!-- BRAND -->
+
+      <div class="brand"
+           th:text="${product.brand != null
+                           ? product.brand
+                           : 'ALIVA'}">
+
+        ALIVA
+
+      </div>
+
+
+      <!-- NAME -->
+
+      <h1 class="product-title"
+          th:text="${product.name}">
+
+        Product
+
+      </h1>
+
+
+      <!-- PRICE -->
+
+      <div class="price">
+
+                <span th:text="${product.price}">
+                    25 000
+                </span>
+
+        ₸
+
+      </div>
+
+
+      <hr class="divider">
+
+
+      <!-- DESCRIPTION -->
+
+      <p class="description"
+         th:text="${product.description != null
+                         ? product.description
+                         : 'Описание товара отсутствует.'}">
+
+        Описание товара
+
+      </p>
+
+
+      <!-- DETAILS -->
+
+      <div class="details">
+
+
+        <div class="detail-row">
+
+                    <span class="detail-label">
+                        Категория
+                    </span>
+
+          <span class="detail-value"
+                th:text="${product.category != null
+                                    ? product.category.name
+                                    : 'Без категории'}">
+
+                        Сумки
+
+                    </span>
+
+        </div>
+
+
+        <div class="detail-row">
+
+                    <span class="detail-label">
+                        Цвет
+                    </span>
+
+          <span class="detail-value"
+                th:text="${product.color != null
+                                    ? product.color
+                                    : 'Не указан'}">
+
+                        Black
+
+                    </span>
+
+        </div>
+
+
+        <div class="detail-row">
+
+                    <span class="detail-label">
+                        Размер
+                    </span>
+
+          <span class="detail-value"
+                th:text="${product.size != null
+                                    ? product.size
+                                    : 'One Size'}">
+
+                        One Size
+
+                    </span>
+
+        </div>
+
+
+        <div class="detail-row">
+
+                    <span class="detail-label">
+                        В наличии
+                    </span>
+
+          <span class="detail-value"
+                th:text="${product.stock}">
+
+                        10
+
+                    </span>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- CART -->
+
+      <form th:action="@{/cart/add/{id}(id=${product.id})}"
+            method="post">
+
+        <button class="cart-button"
+                type="submit">
+
+          Добавить в корзину
+
+        </button>
+
+      </form>
+
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  © 2026 ALIVA — Bags & Shoes
+
+</footer>
+
+
+</body>
+
+</html>

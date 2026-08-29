@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Корзина — ALIVA</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 70px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #111;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      color: #111;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      color: #777;
+    }
+
+    /* CONTAINER */
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 50px 30px 80px;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    /* CART ITEM */
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 25px;
+      align-items: center;
+      padding: 25px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .cart-image {
+      width: 120px;
+      height: 140px;
+      object-fit: cover;
+      background: #f5f5f5;
+    }
+
+    .no-image {
+      width: 120px;
+      height: 140px;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 13px;
+    }
+
+    .item-name {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .item-price {
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .item-stock {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    /* QUANTITY */
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quantity-controls form {
+      margin: 0;
+    }
+
+    .quantity-button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .quantity-button:hover {
+      background: #f5f5f5;
+    }
+
+    .quantity {
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* REMOVE */
+
+    .remove-button {
+      border: none;
+      background: none;
+      color: #777;
+      cursor: pointer;
+      padding: 0;
+      font-size: 13px;
+    }
+
+    .remove-button:hover {
+      color: #111;
+    }
+
+    /* TOTAL */
+
+    .cart-summary {
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid #111;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+
+    .total-label {
+      font-weight: 400;
+    }
+
+    .total-price {
+      font-weight: 600;
+    }
+
+    /* ORDER BUTTON */
+
+    .order-button {
+      width: 100%;
+      padding: 17px;
+      border: none;
+      background: #111;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .order-button:hover {
+      background: #333;
+    }
+
+    .quantity-button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background: #f5f5f5;
+    }
+
+    /* EMPTY */
+
+    .empty {
+      color: #777;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    /* BACK */
+
+    .back {
+      display: inline-block;
+      margin-top: 35px;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      color: #777;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+
+      header {
+        padding: 0 20px;
+      }
+
+      .container {
+        padding: 35px 20px;
+      }
+
+      .cart-item {
+        grid-template-columns: 90px 1fr;
+        gap: 15px;
+      }
+
+      .cart-image,
+      .no-image {
+        width: 90px;
+        height: 110px;
+      }
+
+      .quantity-controls {
+        grid-column: 2;
+      }
+
+      .total-row {
+        font-size: 19px;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <a href="/products"
+     class="logo">
+    ALIVA
+  </a>
+
+  <nav>
+
+    <a href="/products">
+      Каталог
+    </a>
+
+    <a href="/logout">
+      Выйти
+    </a>
+
+  </nav>
+
+</header>
+
+
+<main class="container">
+
+  <h1>
+    Корзина
+  </h1>
+
+
+  <!-- ПУСТАЯ КОРЗИНА -->
+
+  <div th:if="${cartItems.isEmpty()}"
+       class="empty">
+
+    Ваша корзина пуста.
+
+  </div>
+
+
+  <!-- ТОВАРЫ -->
+
+  <div th:each="item : ${cartItems}"
+       class="cart-item">
+
+
+    <!-- IMAGE -->
+
+    <div>
+
+      <img th:if="${item.product.image != null}"
+           th:src="${item.product.image}"
+           th:alt="${item.product.name}"
+           class="cart-image">
+
+      <div th:if="${item.product.image == null}"
+           class="no-image">
+
+        Нет изображения
+
+      </div>
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <div>
+
+      <div class="item-name"
+           th:text="${item.product.name}">
+
+        Название товара
+
+      </div>
+
+
+      <div class="item-price">
+
+                <span th:text="${item.product.price}">
+                    25000
+                </span>
+
+        ₸
+
+      </div>
+
+      <div class="item-stock">
+        В наличии: <span th:text="${item.product.stock}">5</span>
+      </div>
+
+
+      <!-- УДАЛИТЬ -->
+
+      <form th:action="@{/cart/remove/{id}(id=${item.id})}"
+            method="post">
+
+        <button type="submit"
+                class="remove-button">
+
+          Удалить
+
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- QUANTITY -->
+
+    <div class="quantity-controls">
+
+
+      <!-- MINUS -->
+
+      <form th:action="@{/cart/decrease/{id}(id=${item.id})}"
+            method="post">
+
+        <button type="submit"
+                class="quantity-button">
+
+          −
+
+        </button>
+
+      </form>
+
+
+      <!-- QUANTITY -->
+
+      <span class="quantity"
+            th:text="${item.quantity}">
+
+                1
+
+            </span>
+
+
+      <!-- PLUS -->
+
+      <form th:action="@{/cart/increase/{id}(id=${item.id})}"
+            method="post">
+
+        <button type="submit"
+                class="quantity-button"
+                th:disabled="${item.quantity >= item.product.stock}"
+                th:title="${item.quantity >= item.product.stock ? 'Больше нет в наличии' : 'Увеличить количество'}">
+
+          +
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- SUMMARY -->
+
+  <div th:if="${!cartItems.isEmpty()}"
+       class="cart-summary">
+
+    <div class="total-row">
+
+            <span class="total-label">
+                Итого
+            </span>
+
+      <span class="total-price">
+
+                <span th:text="${#aggregates.sum(cartItems.![product.price * quantity])}">
+                    0
+                </span>
+
+                ₸
+
+            </span>
+
+    </div>
+
+
+    <!-- ORDER -->
+
+    <a th:href="@{/orders/checkout}"
+       class="order-button"
+       style="
+        display: block;
+        text-align: center;
+        text-decoration: none;
+   ">
+
+      Оформить заказ
+
+    </a>
+
+  </div>
+
+
+  <!-- BACK -->
+
+  <a href="/products"
+     class="back">
+
+    ← Вернуться в каталог
+
+  </a>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Оформление заказа — ALIVA</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #111;
+            background: #fff;
+        }
+
+        header {
+            height: 90px;
+            padding: 0 70px;
+            border-bottom: 1px solid #e5e5e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-decoration: none;
+            color: #111;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #111;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 55px 30px 80px;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 400;
+            margin-bottom: 45px;
+        }
+
+        .checkout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 60px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #111;
+        }
+
+        .order-summary {
+            border: 1px solid #e5e5e5;
+            padding: 25px;
+        }
+
+        .summary-title {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 17px;
+            margin-top: 30px;
+
+            border: none;
+            background: #111;
+            color: white;
+
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #333;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            color: #111;
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                padding: 0 25px;
+            }
+
+            .checkout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .container {
+                padding: 35px 20px 60px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="/products"
+       class="logo">
+        ALIVA
+    </a>
+
+    <nav>
+
+        <a href="/products">
+            Каталог
+        </a>
+
+        <a href="/cart">
+            Корзина
+        </a>
+
+        <a href="/orders">
+            Заказы
+        </a>
+
+        <a href="/logout">
+            Выйти
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <h1>
+        Оформление заказа
+    </h1>
+
+
+    <div class="checkout">
+
+
+        <!-- ДАННЫЕ ДОСТАВКИ -->
+
+        <div>
+
+            <form th:action="@{/orders/create}"
+                  th:object="${orderDto}"
+                  method="post">
+
+                <div class="section">
+
+                    <div class="section-title">
+                        Данные доставки
+                    </div>
+
+
+                    <label for="phone">
+                        Телефон
+                    </label>
+
+                    <input
+                            id="phone"
+                            type="tel"
+                            th:field="*{phone}"
+                            placeholder="+7 700 000 00 00"
+                            required>
+
+
+                    <label for="address">
+                        Адрес доставки
+                    </label>
+
+                    <input
+                            id="address"
+                            type="text"
+                            th:field="*{address}"
+                            placeholder="Город, улица, дом, квартира"
+                            required>
+
+                </div>
+
+
+                <button type="submit"
+                        class="submit-button">
+
+                    Подтвердить заказ
+
+                </button>
+
+            </form>
+
+
+            <a href="/cart"
+               class="back">
+
+                ← Вернуться в корзину
+
+            </a>
+
+        </div>
+
+
+        <!-- ИТОГ ЗАКАЗА -->
+
+        <div class="order-summary">
+
+            <div class="summary-title">
+                Ваш заказ
+            </div>
+
+
+            <div th:each="item : ${cartItems}"
+                 class="item">
+
+                <span>
+
+                    <span th:text="${item.product.name}">
+                        Сумка
+                    </span>
+
+                    ×
+
+                    <span th:text="${item.quantity}">
+                        1
+                    </span>
+
+                </span>
+
+
+                <span>
+
+                    <span th:text="${item.product.price * item.quantity}">
+                        25000
+                    </span>
+
+                    ₸
+
+                </span>
+
+            </div>
+
+
+            <div class="total">
+
+                <span>
+                    Итого
+                </span>
+
+                <span>
+
+                    <span th:text="${totalPrice}">
+                        25000
+                    </span>
+
+                    ₸
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

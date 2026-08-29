@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>ALIVA — Товар</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #111;
+        }
+
+        header {
+            height: 80px;
+            padding: 0 60px;
+            border-bottom: 1px solid #ddd;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+
+        a {
+            color: #111;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 50px 30px;
+        }
+
+        h1 {
+            font-weight: 400;
+            margin-bottom: 35px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div th:replace="~{admin/admin-header :: header}"></div>
+
+
+
+<main class="container">
+
+    <h1>
+        Товар
+    </h1>
+
+    <form th:if="${productId == null}"
+          th:action="@{/admin/products}"
+          th:object="${productDto}"
+          method="post">
+
+        <div class="field">
+
+            <label>Название</label>
+
+            <input type="text"
+                   th:field="*{name}"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>Бренд</label>
+
+            <input type="text"
+                   th:field="*{brand}"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>Цена</label>
+
+            <input type="number"
+                   step="0.01"
+                   th:field="*{price}"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>Описание</label>
+
+            <textarea th:field="*{description}"
+                      required></textarea>
+
+        </div>
+
+        <div class="field">
+
+            <label>Цвет</label>
+
+            <input type="text"
+                   th:field="*{color}"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>Размер</label>
+
+            <input type="text"
+                   th:field="*{size}"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>Количество</label>
+
+            <input type="number"
+                   th:field="*{stock}"
+                   min="0"
+                   required>
+
+        </div>
+
+        <div class="field">
+
+            <label>URL изображения</label>
+
+            <input type="text"
+                   th:field="*{image}">
+
+        </div>
+
+        <div class="field">
+
+            <label>Категория</label>
+
+            <select th:field="*{categoryId}">
+
+                <option value="">
+                    Без категории
+                </option>
+
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <button type="submit">
+            Добавить товар
+        </button>
+
+    </form>
+
+
+    <form th:if="${productId != null}"
+          th:action="@{/admin/products/edit/{id}(id=${productId})}"
+          th:object="${productDto}"
+          method="post">
+
+        <div class="field">
+            <label>Название</label>
+            <input type="text"
+                   th:field="*{name}"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>Бренд</label>
+            <input type="text"
+                   th:field="*{brand}"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>Цена</label>
+            <input type="number"
+                   step="0.01"
+                   th:field="*{price}"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>Описание</label>
+            <textarea th:field="*{description}"
+                      required></textarea>
+        </div>
+
+        <div class="field">
+            <label>Цвет</label>
+            <input type="text"
+                   th:field="*{color}"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>Размер</label>
+            <input type="text"
+                   th:field="*{size}"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>Количество</label>
+            <input type="number"
+                   th:field="*{stock}"
+                   min="0"
+                   required>
+        </div>
+
+        <div class="field">
+            <label>URL изображения</label>
+            <input type="text"
+                   th:field="*{image}">
+        </div>
+
+        <button type="submit">
+            Сохранить изменения
+        </button>
+
+    </form>
+
+</main>
+
+</body>
+</html>

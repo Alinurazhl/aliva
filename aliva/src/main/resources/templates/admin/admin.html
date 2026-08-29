@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ALIVA — Админ-панель</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    /* HEADER */
+
+    header {
+      height: 80px;
+      padding: 0 60px;
+      border-bottom: 1px solid #ddd;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      color: #111;
+      text-decoration: none;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 5px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    nav a {
+      color: #111;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    nav a:hover {
+      color: #777;
+    }
+
+    nav form {
+      margin: 0;
+    }
+
+    nav button {
+      border: none;
+      background: none;
+      color: #111;
+      cursor: pointer;
+      font-size: 15px;
+      padding: 0;
+    }
+
+    nav button:hover {
+      color: #777;
+    }
+
+    /* MAIN */
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 30px;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-bottom: 45px;
+    }
+
+    /* MENU */
+
+    .admin-menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .admin-card {
+      display: block;
+      padding: 35px;
+      border: 1px solid #ddd;
+      color: #111;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .admin-card:hover {
+      background: #f7f7f7;
+    }
+
+    .admin-card h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .admin-card p {
+      margin: 0;
+      color: #777;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        padding: 0 20px;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      .admin-menu {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+  <!-- ЛОГО -->
+
+  <a href="/admin"
+     class="logo">
+
+    ALIVA ADMIN
+
+
+  </a>
+
+
+  <!-- НАВИГАЦИЯ -->
+
+  <nav>
+
+    <a href="/admin">
+      Главная
+    </a>
+
+    <a href="/admin/products">
+      Товары
+    </a>
+
+    <a href="/admin/categories">
+      Категории
+    </a>
+
+    <a href="/admin/orders">
+      Заказы
+    </a>
+
+    <a href="/products">
+      Магазин
+    </a>
+
+    <form th:action="@{/logout}"
+          method="post">
+
+      <button type="submit">
+        Выйти
+      </button>
+
+    </form>
+
+  </nav>
+
+</header>
+
+
+<main class="container">
+
+  <h1>
+    Админ-панель
+  </h1>
+
+  <p class="subtitle">
+    Управление интернет-магазином ALIVA
+  </p>
+
+
+  <div class="admin-menu">
+
+    <!-- ТОВАРЫ -->
+
+    <a href="/admin/products"
+       class="admin-card">
+
+      <h2>
+        Товары
+      </h2>
+
+      <p>
+        Добавление, редактирование и удаление товаров.
+      </p>
+
+    </a>
+
+
+    <!-- КАТЕГОРИИ -->
+
+    <a href="/admin/categories"
+       class="admin-card">
+
+      <h2>
+        Категории
+      </h2>
+
+      <p>
+        Управление категориями товаров.
+      </p>
+
+    </a>
+
+
+    <!-- ЗАКАЗЫ -->
+
+    <a href="/admin/orders"
+       class="admin-card">
+
+      <h2>
+        Заказы
+      </h2>
+
+      <p>
+        Просмотр заказов и изменение их статуса.
+      </p>
+
+    </a>
+
+
+    <!-- МАГАЗИН -->
+
+    <a href="/products"
+       class="admin-card">
+
+      <h2>
+        Магазин
+      </h2>
+
+      <p>
+        Перейти на обычную страницу магазина.
+      </p>
+
+    </a>
+
+  </div>
+
+</main>
+
+</body>
+
+</html>
